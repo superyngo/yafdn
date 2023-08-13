@@ -9,7 +9,7 @@ export async function renderMd(mdraw: string) {
     await compile(mdraw, {
       highlight: {
         highlighter: async (code, lang = "text") => {
-          // const highlighter = await shiki.getHighlighter({theme: "poimandres"});
+          const highlighter = await shiki.getHighlighter({theme: "poimandres"});
           const html = code;
           return `${html}`;
         },
