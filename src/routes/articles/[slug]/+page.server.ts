@@ -2,7 +2,7 @@ import {createPool} from "@vercel/postgres";
 import {error} from "@sveltejs/kit";
 const db = createPool();
 
-import {renderMd} from "$lib/components/mdsvexCustom/renderMd";
+import {renderMd} from "/src/lib/components/mdsvexCustom/renderMd";
 export async function load({params}) {
   try {
     const {
@@ -19,7 +19,7 @@ export async function load({params}) {
     // const html = await renderMd(mdraw);
     const html = mdraw;
     metadata.categories = categories;
-    return {html, metadata, renderMd};
+    return {html, metadata};
   } catch (e) {
     throw error(404, `Can't find page ${params.slug}`);
   }
