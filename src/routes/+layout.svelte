@@ -1,5 +1,6 @@
 <script>
   export const prerender = false;
+  export const ssr = true;
   import Header from "./Header.svelte";
   import "./styles.css";
 </script>
