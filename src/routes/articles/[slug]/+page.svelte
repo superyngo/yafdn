@@ -1,8 +1,10 @@
 <script lang="ts">
+  console.log("step1");
   import {formatDate} from "$lib/utils";
   import Label from "$lib/components/label.svelte";
 
   export let data;
+  console.log("step2", data);
   const {html, metadata} = data;
 </script>
 
