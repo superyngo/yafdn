@@ -9,15 +9,15 @@ console.log("step2");
 export async function renderMd(mdraw: string) {
   return (
     await compile(mdraw, {
-      highlight: {
-        highlighter: async (code, lang = "text") => {
-          console.log("step3");
+      // highlight: {
+      //   highlighter: async (code, lang = "text") => {
+      //     console.log("step3");
 
-          const highlighter = await shiki.getHighlighter({theme: "poimandres"});
-          const html = escapeSvelte(highlighter.codeToHtml(code, {lang}));
-          return `${html}`;
-        },
-      },
+      //     const highlighter = await shiki.getHighlighter({theme: "poimandres"});
+      //     const html = escapeSvelte(highlighter.codeToHtml(code, {lang}));
+      //     return `${html}`;
+      //   },
+      // },
       remarkPlugins: [remarkUnwrapImages, [remarkToc, {tight: true}]],
       rehypePlugins: [rehypeSlug],
     })
