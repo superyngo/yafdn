@@ -10,7 +10,7 @@ export async function renderMd(mdraw: string) {
       highlight: {
         highlighter: async (code, lang = "text") => {
           // const highlighter = await shiki.getHighlighter({theme: "poimandres"});
-          const html = escapeSvelte(highlighter.codeToHtml(code, {lang}));
+          const html = code;
           return `${html}`;
         },
       },
