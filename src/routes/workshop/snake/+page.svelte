@@ -1,5 +1,5 @@
 <script>
-  import {Snake} from "$lib/apps";
+  import Snake from "$lib/apps/snake.svelte";
 </script>
 
 <div class="appWrapper h-full relative">
