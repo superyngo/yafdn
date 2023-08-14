@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 :root {
-	font-size: 12px;
-	line-height: 20px;
-	/* color-scheme: dark; */
+  font-size: 12px;
+  line-height: 20px;
+  /* color-scheme: dark; */
 }
 
 body {
-	@apply bg-white dark:bg-black text-black dark:text-white text-center duration-300;
+  @apply bg-white dark:bg-black text-black dark:text-white text-center duration-300;
 }
 
 .prose * {
-	@apply dark:text-white;
+  @apply dark:text-white text-left;
 }
 
 @media only screen and (min-width: 640px) {
-	:root {
-		font-size: 16px;
-		line-height: 24px;
-	}
+  :root {
+    font-size: 16px;
+    line-height: 24px;
+  }
 }

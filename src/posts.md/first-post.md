@@ -1,25 +1,87 @@
 ---
-title: First post
-description: First post.
-date: '2023-4-14'
+title: Postgres操作技巧:操作JSON
+description: 用Postgres操作json
+date: "2023/08/14"
+modified:
 categories:
-  - sveltekit
-  - svelte
-  - lorem
-  - lorem1
-  - lorem2
-  - lorem3
-  - lorem4
-  - lorem5
+  - Postgres
+  - database
 published: true
 ---
 
-## Markdown
+Postgres 是物件導向資料庫，  
+使用上可自定義 object type 的 property
 
-Hey friends! 👋
-
-```ts
-function greet(name: string) {
-	console.log(`Hey ${name}! 👋`);
-}
+```sql
+CREATE TYPE metatype as (
+  title VARCHAR(255),
+  description VARCHAR(255),
+  date DATE,
+  categories VARCHAR(255)[255],
+  published boolean
+)
+--INSERT VALUE 時用ROW()包，有ARRAY用ARRAY[]包
+ROW('First post',
+  'First post.',
+  '2023/04/14',
+  ARRAY[
+      'sveltekit', 'svelte',
+      'lorem',     'lorem1',
+      'lorem2',    'lorem3',
+      'lorem4',    'lorem5'
+    ],
+  'true')
 ```
+
+後續就可以針對 property 操作
+
+更簡單的方式是直接把資料存成 json  
+直接 query 或 set json 的 property
+
+```sql
+INSERT INTO posts (metadata)
+VALUES
+(
+'{
+  "title": "First post",
+  "description": "First post.",
+  "date": "2023-4-14",
+  "categories": [
+    "sveltekit",
+    "svelte",
+  ],
+  "published": true
+}'::json
+)
+```
+
+### SELECT
+
+```
+--SELECT 用->符號回傳原值
+SELECT metadata->'published' FROM posts
+WHERE id= 1
+--SELECT 用->>符號回傳text
+SELECT slug FROM posts
+WHERE metadata->>'published' = 'true';
+--用ANY搜尋ARRAY
+SELECT slug FROM posts
+WHERE 'sveltekit' = ANY(string_to_array(metadata->>'categories', ','))
+```
+
+### SET
+
+```
+UPDATE posts
+SET metadata = jsonb_set(metadata ::jsonb, '{date}'::text[] , '"2023/08/01"'::jsonb, false)
+where id= 1
+--jsonb_set語法
+jsonb_set(
+  target JSONB, path TEXT[], new_value JSONB[, create_if_missing BOOLEAN]
+) -> JSONB
+```
+
+參考資料：  
+[JSON Functions and Operators](https://www.postgresql.org/docs/9.3/functions-json.html)  
+[PostgreSQL jsonb_set() 函数](https://www.sjkjc.com/postgresql-ref/jsonb_set/)  
+[PostgreSQL in 100 Seconds(youtube)](https://www.youtube.com/watch?v=n2Fluyr3lbc)

@@ -3,7 +3,6 @@
   import Articles from "$lib/components/Articles.svelte";
   import Labels from "$lib/components/labels.svelte";
   export let data;
-  console.log(data);
 
   onMount(() => {
     if (data.queryCategory) {
@@ -19,20 +18,26 @@
 
   let selectedCategories: string[] = [];
   function setSelectedCategories(e: MouseEvent) {
+    if (e.target.className === "clearButton") {
+      return clearFilter();
+    }
     if (e.target.tagName != "SPAN") return;
     if (e.target.className.match("pushed")) {
       e.target.classList.remove("pushed");
-      console.log(selectedCategories.indexOf(e.target.textContent));
       const spliced = [...selectedCategories];
       spliced.splice(selectedCategories.indexOf(e.target.textContent), 1);
-      console.log(spliced);
       selectedCategories = [...spliced];
     } else {
       e.target.classList.add("pushed");
       selectedCategories = [...selectedCategories, e.target.textContent];
     }
   }
-  //{slug: 'first-post4', metadata: {…}, categories: Array(3)}
+  function clearFilter() {
+    const labels = document.querySelectorAll(".label");
+    labels.forEach((l) => l.classList.remove("pushed"));
+    selectedCategories = [];
+  }
+
   let postList;
   $: {
     const temp = data.postList.filter((p) =>
@@ -43,17 +48,21 @@
 </script>
 
 <div class="wrapper flex flex-col gap-2 sm:flex-row-reverse h-full">
-  <button
-    class="wrapper grow-0 sm:w-48 pushed"
-    on:click={(e) => setSelectedCategories(e)}
-  >
-    <Labels
-      data={{
-        categories: data.categories,
-      }}
-    />
-  </button>
-  <div class="wrapper grow">
+  <div class="labels">
+    <button
+      class="wrapper grow-0 sm:w-48 pushed"
+      on:click={(e) => setSelectedCategories(e)}
+    >
+      <Labels
+        data={{
+          categories: data.categories,
+        }}
+      />
+      <button class="clearButton">clear</button>
+    </button>
+  </div>
+
+  <div class="postList wrapper grow">
     {#if postList[0]}
       <Articles data={{postList}} />
     {/if}

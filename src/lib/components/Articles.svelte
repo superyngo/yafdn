@@ -11,11 +11,11 @@
         hover:bg-gray-400
         dark:hover:bg-yellow-400"
       >
-        <p class="">
-          {post.metadata.title}
+        <p class="text-xl">
+          {post.title}
         </p>
-        <p>{formatDate(post.metadata.date)}</p>
-        <p>{post.metadata.description}</p>
+        <p>posted on {formatDate(post.date)}</p>
+        <p class="text-sm">{post.description}</p>
       </li>
     </a>
   {/each}
