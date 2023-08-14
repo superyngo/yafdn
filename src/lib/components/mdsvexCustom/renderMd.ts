@@ -2,14 +2,13 @@ import {compile, escapeSvelte} from "mdsvex";
 import remarkUnwrapImages from "remark-unwrap-images";
 import remarkToc from "remark-toc";
 import rehypeSlug from "rehype-slug";
-// import * as shiki from "shiki";
 import {getHighlighter} from "shiki";
 
 const mdsvexoption = {
   highlight: {
     highlighter: async (code: string, lang = "text") => {
       const highlighter = await getHighlighter({
-        theme: "github-dark",
+        // theme: "github-dark",
       });
       const html = escapeSvelte(highlighter.codeToHtml(code, {lang}));
       return `${html}`;
