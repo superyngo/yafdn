@@ -5,15 +5,15 @@ import rehypeSlug from "rehype-slug";
 import {getHighlighter} from "shiki";
 
 const mdsvexoption = {
-  highlight: {
-    highlighter: async (code: string, lang = "text") => {
-      const highlighter = await getHighlighter({
-        // theme: "github-dark",
-      });
-      const html = escapeSvelte(highlighter.codeToHtml(code, {lang}));
-      return `${html}`;
-    },
-  },
+  // highlight: {
+  //   highlighter: async (code: string, lang = "text") => {
+  //     const highlighter = await getHighlighter({
+  //       theme: "dark-plus",
+  //     });
+  //     const html = escapeSvelte(highlighter.codeToHtml(code, {lang}));
+  //     return `${html}`;
+  //   },
+  // },
   remarkPlugins: [remarkUnwrapImages, [remarkToc, {tight: true}]],
   rehypePlugins: [rehypeSlug],
 };

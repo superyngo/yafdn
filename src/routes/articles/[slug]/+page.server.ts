@@ -16,7 +16,6 @@ export async function load({params}) {
       )
     ).rows[0];
     const html = await renderMd(mdraw);
-    // const html = mdraw;
     metadata.categories = categories;
     return {html, metadata};
   } catch (e) {

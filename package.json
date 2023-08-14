@@ -45,11 +45,12 @@
   "type": "module",
   "dependencies": {
     "@vercel/postgres": "^0.4.1",
+    "mdsvex": "^0.11.0",
     "memfs": "^4.2.1",
+    "prismjs": "^1.29.0",
     "rehype-slug": "^5.1.0",
     "remark-toc": "^8.0.1",
     "remark-unwrap-images": "^3.0.1",
-    "mdsvex": "^0.11.0",
     "shiki": "^0.14.3"
   }
 }
