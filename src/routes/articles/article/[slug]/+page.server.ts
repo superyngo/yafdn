@@ -17,7 +17,7 @@ export async function load({params}) {
     ).rows[0];
     const html = await renderMd(mdraw);
     metadata.categories = categories;
-    return {html, metadata};
+    return {html, metadata, mdraw};
   } catch (e) {
     throw error(404, `Can't find page ${params.slug}`);
   }

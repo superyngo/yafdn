@@ -1,7 +1,22 @@
 <script lang="ts">
+  import {onMount} from "svelte";
   import Articles from "$lib/components/Articles.svelte";
   import Labels from "$lib/components/labels.svelte";
   export let data;
+  console.log(data);
+
+  onMount(() => {
+    if (data.queryCategory) {
+      const selectedCategory = document.getElementById(data.queryCategory);
+      const clickEvent = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      selectedCategory && selectedCategory.dispatchEvent(clickEvent);
+    }
+  });
+
   let selectedCategories: string[] = [];
   function setSelectedCategories(e: MouseEvent) {
     if (e.target.tagName != "SPAN") return;

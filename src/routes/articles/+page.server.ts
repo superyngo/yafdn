@@ -1,6 +1,7 @@
 import {getPostsList, getCategoriesList} from "$lib/database/";
-export async function load() {
+export async function load({url}) {
   const categories = await getCategoriesList();
   const postList = await getPostsList(categories);
-  return {postList, categories};
+  const queryCategory = url.searchParams.get("category");
+  return {postList, categories, queryCategory};
 }
