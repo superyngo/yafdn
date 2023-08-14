@@ -15,7 +15,7 @@ export async function load({params}) {
         [params.slug]
       )
     ).rows[0];
-    const html = await renderMd(mdraw);
+    const html = mdraw; //await renderMd(mdraw);
     metadata.categories = categories;
     return {html, metadata, mdraw};
   } catch (e) {
