@@ -6,3 +6,7 @@ export let test = "# 歡迎"
 
 123
 {test}
+
+```vue
+console.log(123);
+```

@@ -3,6 +3,7 @@ import remarkUnwrapImages from "remark-unwrap-images";
 import remarkToc from "remark-toc";
 import rehypeSlug from "rehype-slug";
 import {escapeSvelte} from "mdsvex";
+import {getHighlighter} from "shiki";
 
 const config = defineConfig({
   extensions: [".md", ".svx"],
@@ -11,7 +12,7 @@ const config = defineConfig({
   },
   highlight: {
     highlighter: async (code, lang = "text") => {
-      const highlighter = await shiki.getHighlighter({theme: "poimandres"});
+      const highlighter = await getHighlighter({theme: "poimandres"});
       const html = escapeSvelte(highlighter.codeToHtml(code, {lang}));
       return `{@html \`${html}\` }`;
     },
