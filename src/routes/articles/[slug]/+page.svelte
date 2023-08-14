@@ -1,9 +1,18 @@
 <script lang="ts">
   import {formatDate} from "$lib/utils";
   import Label from "$lib/components/label.svelte";
+  import {onMount} from "svelte";
 
   export let data;
   const {html, metadata} = data;
+  onMount(() => {
+    const preElements = document.querySelectorAll("pre");
+
+    preElements.forEach((element) => {
+      element.removeChild(element.firstChild);
+      element.removeChild(element.lastChild);
+    });
+  });
 </script>
 
 <!-- SEO -->
@@ -13,12 +22,12 @@
   </title>
   <meta property="og:type" content="article" />
   <meta property="og:title" content={metadata.title} />
-  <!-- <link
+  <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css"
     integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ=="
     crossorigin="anonymous"
-  /> -->
+  />
 </svelte:head>
 
 <!-- title -->

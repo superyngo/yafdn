@@ -2,7 +2,7 @@ import {compile, escapeSvelte} from "mdsvex";
 import remarkUnwrapImages from "remark-unwrap-images";
 import remarkToc from "remark-toc";
 import rehypeSlug from "rehype-slug";
-import {getHighlighter} from "shiki";
+// import {getHighlighter} from "shiki";
 
 const mdsvexoption = {
   // highlight: {
