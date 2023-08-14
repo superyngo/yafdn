@@ -1,7 +1,6 @@
 import {createPool} from "@vercel/postgres";
 import {error} from "@sveltejs/kit";
 const db = createPool();
-
 import {renderMd} from "/src/lib/components/mdsvexCustom/renderMd";
 export async function load({params}) {
   try {
