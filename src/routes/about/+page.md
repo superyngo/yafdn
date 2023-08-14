@@ -4,4 +4,5 @@ Hi 我是 Wen
 
 本網站使用 Sveltekit、Tailwind 搭建  
 Markdown 編譯引擎：mdsvex  
-code 區塊渲染引擎：shiki、Prismjs
+code 區塊渲染引擎：shiki  
+deploy on vercel

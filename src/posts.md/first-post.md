@@ -10,7 +10,7 @@ published: true
 ---
 
 Postgres 是物件導向資料庫，  
-使用上可自定義 object type 的 property
+可以定義 custom type 對應 object 的 property
 
 ```sql
 CREATE TYPE metatype as (
@@ -33,9 +33,9 @@ ROW('First post',
   'true')
 ```
 
-後續就可以針對 property 操作
+後續就可以針對 object property 操作
 
-更簡單的方式是直接把資料存成 json  
+更簡單的方式是把資料存成 json  
 直接 query 或 set json 的 property
 
 ```sql

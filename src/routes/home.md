@@ -1,12 +1,6 @@
 <script lang="ts">
-export let test = "# 歡迎"
 </script>
 
-# 歡迎
-
-123
-{test}
-
 ```vue
-console.log(123);
+console.log(歡迎);
 ```

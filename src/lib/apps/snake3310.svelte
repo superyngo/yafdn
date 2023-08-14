@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {onMount, onDestroy} from "svelte";
+  import {onMount, onDestroy, tick} from "svelte";
   export let canvasWidth: number = 10,
     canvasHeight: number = 10,
     speed: number = 5,
@@ -19,7 +19,10 @@
 
     setCanvas();
     canvas.focus();
-    window.onresize = setCanvas;
+    document.addEventListener("resize", async () => {
+      await tick();
+      setCanvas();
+    });
   });
   onDestroy(() => snake.stop());
 
@@ -511,16 +514,16 @@
     content: "";
     z-index: 10;
     position: absolute;
-    border: var(--canvas-border-line);
+    /* border: var(--canvas-border-line); */
     width: var(--canvas-border-width);
     height: var(--canvas-border-height);
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
   }
-  #canvas:focus:after {
+  /* #canvas:focus:after {
     box-shadow: 0 0 10px 10px darkgrey;
-  }
+  } */
 
   .brick {
     position: relative;
@@ -577,8 +580,8 @@
   }
 
   .body {
-    background: rgba(0, 128, 0, 0.843);
-    border: calc(var(--br-height) / 30) solid black;
+    background: black;
+    border: calc(var(--br-height) / 5) solid white;
   }
   .up {
     border-top: none;

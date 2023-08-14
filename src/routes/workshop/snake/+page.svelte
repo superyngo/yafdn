@@ -3,5 +3,5 @@
 </script>
 
 <div class="appWrapper h-full relative">
-  <Snake canvasWidth={10} canvasHeight={20} speed={3} />
+  <Snake canvasWidth={30} canvasHeight={20} speed={3} controlHeight="0px" />
 </div>
