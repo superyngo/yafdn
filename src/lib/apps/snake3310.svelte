@@ -5,6 +5,10 @@
     speed: number = 5,
     controlHeight: string = "50px";
 
+  const phoneImage: HTMLElement = <HTMLElement>(
+    document.querySelector(".phoneImage")
+  );
+
   onMount(() => {
     document.documentElement.style.setProperty(
       "--controlHeight",
@@ -18,7 +22,7 @@
     const canvas: HTMLElement = <HTMLElement>document.getElementById("canvas");
 
     setCanvas();
-    canvas.focus();
+    phoneImage.focus();
     window.addEventListener("resize", async () => {
       await tick();
       setCanvas();
@@ -380,7 +384,7 @@
       console.log("start");
       snake.status != this.enumStatus.paused && this.reset();
       snake.status = this.enumStatus.running;
-      canvas?.focus();
+      // phone.focus();
       this.rolling();
     }
     stop() {
@@ -411,37 +415,25 @@
   const snake = new Snake(canvasWidth, canvasHeight, speed);
 </script>
 
-<div
-  class="phone relative h-full m-auto"
-  on:keydown={(e) => snake.setDirection(e)}
-  on:touchstart={(e) => snake.touchstart(e)}
-  on:touchmove={(e) => snake.touchmove(e)}
-  on:touchend={(e) => snake.touchend(e)}
-  on:click={(e) => {
-    e.target.focus();
-  }}
-  on:mousedown={(e) => snake.mousedown(e)}
-  on:mouseup={(e) => snake.mouseup(e)}
-  role="button"
-  tabindex={0}
->
-  <img class="phoneImage m-auto z-0 relative" src="/Nokia_3310.png" alt="" />
-  <div class="screen border-4 absolute z-0">
-    <div class="innerAppWrapper absolute z-10">
-      <!-- control div -->
-      {#if controlHeight != "0px"}
-        <div class="control">
-          <!-- show start -->
-          {#if snake.status != snake.enumStatus.running}
-            <button on:click={() => snake.start()}>start</button>
-          {/if}
-          <!-- show pause -->
-          {#if snake.status === snake.enumStatus.running}
-            <button on:click={() => snake.pause()}>pause</button>
-          {/if}
-          <button on:click={() => snake.reset()}>reset</button>
-        </div>
-      {/if}
+<div class="phone relative h-full m-auto z-40">
+  <img
+    class="phoneImage m-auto relative z-0"
+    src="/Nokia_3310.png"
+    alt=""
+    on:keydown={(e) => snake.setDirection(e)}
+    on:touchstart={(e) => snake.touchstart(e)}
+    on:touchmove={(e) => snake.touchmove(e)}
+    on:touchend={(e) => snake.touchend(e)}
+    on:click={(e) => {
+      e.target.focus();
+    }}
+    on:mousedown={(e) => snake.mousedown(e)}
+    on:mouseup={(e) => snake.mouseup(e)}
+    role="button"
+    tabindex={0}
+  />
+  <div class="screen border-4 absolute">
+    <div class="innerAppWrapper absolute">
       <!-- <div class="canvasWrapper"> -->
       <div
         id="canvas"
@@ -514,8 +506,8 @@
     display: grid;
     place-content: center;
   }
-  #canvas:focus {
-    outline: none;
+  #phone:focus {
+    /* outline: none; */
   }
   #canvas:after {
     content: "";
