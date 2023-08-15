@@ -172,6 +172,7 @@
     }
     touchstart(e: TouchEvent) {
       e.preventDefault();
+      snake.start();
       const touch = e.touches[0];
       this.touchParams.clientXStart = touch.clientX;
       this.touchParams.clientYStart = touch.clientY;
@@ -188,11 +189,6 @@
       } else if (Math.abs(dy) > threshold) {
         const key: string = dy > 0 ? "ArrowDown" : "ArrowUp";
         this.setDirection(new KeyboardEvent("keydown", {key}));
-      }
-      // else if (snake.status === this.enumStatus.running) {
-      //   // snake.pause();
-      else {
-        snake.start();
       }
     }
     touchend(e: TouchEvent) {

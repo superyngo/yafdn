@@ -28,8 +28,8 @@
 
   #theme-toggle + label {
     @apply inline-block cursor-pointer absolute rounded-full duration-300 
-						h-5 w-5 bottom-12 left-5 z-40
-						sm:h-8 sm:w-8 sm:bottom-8;
+						h-5 w-5 bottom-2 left-2 z-40
+						sm:h-8 sm:w-8 sm:top-5;
   }
 
   #theme-toggle:not(:checked) + label {
