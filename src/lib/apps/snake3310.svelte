@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {onMount, onDestroy, tick} from "svelte";
+  import {onMount, onDestroy, afterUpdate} from "svelte";
   export let canvasWidth: number = 10,
     canvasHeight: number = 10,
     speed: number = 5,
@@ -25,6 +25,9 @@
     });
   });
   onDestroy(() => snake.stop());
+  afterUpdate(() => {
+    setCanvas();
+  });
 
   function setCanvas() {
     const innerAppWrapper: HTMLElement =
@@ -408,7 +411,20 @@
   const snake = new Snake(canvasWidth, canvasHeight, speed);
 </script>
 
-<div class="phone relative h-full m-auto border-4 z-0">
+<div
+  class="phone relative h-full m-auto"
+  on:keydown={(e) => snake.setDirection(e)}
+  on:touchstart={(e) => snake.touchstart(e)}
+  on:touchmove={(e) => snake.touchmove(e)}
+  on:touchend={(e) => snake.touchend(e)}
+  on:click={(e) => {
+    e.target.focus();
+  }}
+  on:mousedown={(e) => snake.mousedown(e)}
+  on:mouseup={(e) => snake.mouseup(e)}
+  role="button"
+  tabindex={0}
+>
   <img class="phoneImage m-auto z-0 relative" src="/Nokia_3310.png" alt="" />
   <div class="screen border-4 absolute z-0">
     <div class="innerAppWrapper absolute z-10">
@@ -430,17 +446,6 @@
       <div
         id="canvas"
         class="z-20"
-        on:keydown={(e) => snake.setDirection(e)}
-        on:touchstart={(e) => snake.touchstart(e)}
-        on:touchmove={(e) => snake.touchmove(e)}
-        on:touchend={(e) => snake.touchend(e)}
-        on:click={(e) => {
-          e.target.focus();
-        }}
-        on:mousedown={(e) => snake.mousedown(e)}
-        on:mouseup={(e) => snake.mouseup(e)}
-        role="button"
-        tabindex={0}
         style="grid-template-columns: repeat({canvasWidth}, auto);"
       >
         {#each Array(canvasWidth * canvasHeight) as _, index (index)}
