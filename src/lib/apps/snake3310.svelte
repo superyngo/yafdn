@@ -1,28 +1,16 @@
 <script lang="ts">
-  import {onMount, onDestroy, afterUpdate} from "svelte";
+  import {onMount, onDestroy, afterUpdate, tick} from "svelte";
   export let canvasWidth: number = 10,
     canvasHeight: number = 10,
-    speed: number = 5,
-    controlHeight: string = "50px";
+    speed: number = 5;
 
   const phoneImage: HTMLElement = <HTMLElement>(
     document.querySelector(".phoneImage")
   );
 
   onMount(() => {
-    document.documentElement.style.setProperty(
-      "--controlHeight",
-      controlHeight
-    );
-    console.log(
-      getComputedStyle(document.documentElement).getPropertyValue(
-        "--controlHeight"
-      )
-    );
-    const canvas: HTMLElement = <HTMLElement>document.getElementById("canvas");
-
     setCanvas();
-    window.addEventListener("resize", async () => {
+    window.addEventListener("resize", () => {
       console.log("resize");
       setCanvas();
     });
@@ -33,6 +21,19 @@
   });
 
   function setCanvas() {
+    console.log(window.innerWidth);
+    const contentWrapper = document.querySelector(".contentWrapper");
+    const imgHeight =
+      +getComputedStyle(contentWrapper)
+        .getPropertyValue("height")
+        .match(/\d+/)[0] - (window.innerWidth > 640 ? 90 : 15);
+    console.log(imgHeight);
+    document.documentElement.style.setProperty(
+      "--image-height",
+      imgHeight + "px"
+    );
+
+    // --image - height;
     const innerAppWrapper: HTMLElement =
       document.querySelector(".innerAppWrapper");
     const control: HTMLElement = document.querySelector(".control");
@@ -415,9 +416,9 @@
   const snake = new Snake(canvasWidth, canvasHeight, speed);
 </script>
 
-<div class="phone relative h-full m-auto z-40">
+<div class="phone">
   <img
-    class="phoneImage m-auto relative z-0"
+    class="phoneImage m-auto relative"
     src="/Nokia_3310.png"
     alt=""
     on:keydown={(e) => snake.setDirection(e)}
@@ -433,8 +434,7 @@
     tabindex={0}
   />
   <div class="screen border-4 absolute">
-    <div class="innerAppWrapper absolute">
-      <!-- <div class="canvasWrapper"> -->
+    <div class="innerAppWrapper">
       <div
         id="canvas"
         class="z-20"
@@ -484,12 +484,12 @@
 <style lang="postcss">
   :root {
     --br-height: 1px;
-    --controlHeight: 50px;
     --canvas-border-width: 0px;
     --canvas-border-height: 0px;
     --head-angle: 0deg;
     --wrapper-padding: 0px;
     --canvas-border-line: 2px solid darkgrey;
+    --image-height: 100%;
   }
   .innerAppWrapper {
     padding: var(--wrapper-padding);
@@ -499,23 +499,12 @@
     flex-direction: column;
     overflow: hidden;
   }
-  .control {
-    height: var(--controlHeight);
-    flex-shrink: 0;
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    place-content: center;
-    gap: 1rem;
-  }
 
   #canvas {
     position: relative;
     flex-grow: 1;
     display: grid;
     place-content: center;
-  }
-  #phone:focus {
-    /* outline: none; */
   }
   #canvas:after {
     content: "";
@@ -528,15 +517,11 @@
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
   }
-  /* #canvas:focus:after {
-    box-shadow: 0 0 10px 10px darkgrey;
-  } */
 
   .brick {
     position: relative;
     aspect-ratio: 1/1;
     height: var(--br-height);
-    /* border: 1px solid black; */
   }
 
   .face {
@@ -578,17 +563,18 @@
   }
 
   .phone {
-    width: fit-content;
-    max-height: 100%;
+    @apply relative h-full m-auto border-4;
+    width: max-content;
+    /* overflow: hidden; */
   }
 
   .phoneImage {
-    max-height: 100%;
+    max-height: var(--image-height);
   }
   .screen {
     inset: 26% 15% 52%;
     border: 1px solid black;
-    background-color: rgb(118, 244, 111);
+    background-color: rgb(83, 141, 80);
     border-radius: 5% 5% 15% 15%;
   }
 </style>

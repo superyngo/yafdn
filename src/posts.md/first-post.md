@@ -1,5 +1,5 @@
 ---
-title: Postgres操作技巧:操作JSON
+title: Postgres操作技巧:JSON
 description: 用Postgres操作json
 date: "2023/08/14"
 modified:
