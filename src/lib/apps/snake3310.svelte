@@ -22,9 +22,8 @@
     const canvas: HTMLElement = <HTMLElement>document.getElementById("canvas");
 
     setCanvas();
-    phoneImage.focus();
     window.addEventListener("resize", async () => {
-      await tick();
+      console.log("resize");
       setCanvas();
     });
   });
@@ -382,6 +381,7 @@
     start() {
       if (snake.status === this.enumStatus.running) return;
       console.log("start");
+      setCanvas();
       snake.status != this.enumStatus.paused && this.reset();
       snake.status = this.enumStatus.running;
       // phone.focus();
