@@ -581,6 +581,7 @@
     width: fit-content;
     max-height: 100%;
   }
+
   .phoneImage {
     max-height: 100%;
   }
