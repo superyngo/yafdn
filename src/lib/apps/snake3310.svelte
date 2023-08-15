@@ -19,7 +19,7 @@
 
     setCanvas();
     canvas.focus();
-    document.addEventListener("resize", async () => {
+    window.addEventListener("resize", async () => {
       await tick();
       setCanvas();
     });
@@ -412,69 +412,75 @@
   const snake = new Snake(canvasWidth, canvasHeight, speed);
 </script>
 
-<div class="innerAppWrapper">
-  <!-- control div -->
-  {#if controlHeight != "0px"}
-    <div class="control">
-      <!-- show start -->
-      {#if snake.status != snake.enumStatus.running}
-        <button on:click={() => snake.start()}>start</button>
+<div class="phone relative h-full m-auto border-4 z-0">
+  <img class="phoneImage m-auto z-0 relative" src="/Nokia_3310.png" alt="" />
+  <div class="screen border-4 absolute z-0">
+    <div class="innerAppWrapper absolute z-10">
+      <!-- control div -->
+      {#if controlHeight != "0px"}
+        <div class="control">
+          <!-- show start -->
+          {#if snake.status != snake.enumStatus.running}
+            <button on:click={() => snake.start()}>start</button>
+          {/if}
+          <!-- show pause -->
+          {#if snake.status === snake.enumStatus.running}
+            <button on:click={() => snake.pause()}>pause</button>
+          {/if}
+          <button on:click={() => snake.reset()}>reset</button>
+        </div>
       {/if}
-      <!-- show pause -->
-      {#if snake.status === snake.enumStatus.running}
-        <button on:click={() => snake.pause()}>pause</button>
-      {/if}
-      <button on:click={() => snake.reset()}>reset</button>
-    </div>
-  {/if}
-  <!-- <div class="canvasWrapper"> -->
-  <div
-    id="canvas"
-    on:keydown={(e) => snake.setDirection(e)}
-    on:touchstart={(e) => snake.touchstart(e)}
-    on:touchmove={(e) => snake.touchmove(e)}
-    on:touchend={(e) => snake.touchend(e)}
-    on:click={(e) => {
-      e.target.focus();
-    }}
-    on:mousedown={(e) => snake.mousedown(e)}
-    on:mouseup={(e) => snake.mouseup(e)}
-    role="button"
-    tabindex={0}
-    style="grid-template-columns: repeat({canvasWidth}, auto);"
-  >
-    {#each Array(canvasWidth * canvasHeight) as _, index (index)}
-      <div class="brick br{index}">
-        <!-- show tongue -->
-        {#if index === snake.body[0] && snake.status != snake.enumStatus.null}
-          <div class="face" style="rotate:{snake.headAngle}deg">
-            <div class="tongue">
-              <svg
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:sketchjs="https://sketch.io/dtd/"
-                sketchjs:metadata="eyJuYW1lIjoiRHJhd2luZy0zLnNrZXRjaHBhZCIsInN1cmZhY2UiOnsiaXNQYWludCI6dHJ1ZSwibWV0aG9kIjoiZmlsbCIsImJsZW5kIjoibm9ybWFsIiwiZW5hYmxlZCI6dHJ1ZSwib3BhY2l0eSI6MSwidHlwZSI6InBhdHRlcm4iLCJwYXR0ZXJuIjp7InR5cGUiOiJwYXR0ZXJuIiwicmVmbGVjdCI6Im5vLXJlZmxlY3QiLCJyZXBlYXQiOiJyZXBlYXQiLCJzbW9vdGhpbmciOmZhbHNlLCJzcmMiOiJ0cmFuc3BhcmVudExpZ2h0Iiwic3giOjEsInN5IjoxLCJ4MCI6MC41LCJ4MSI6MSwieTAiOjAuNSwieTEiOjF9LCJpc0ZpbGwiOnRydWV9LCJjbGlwUGF0aCI6eyJlbmFibGVkIjp0cnVlLCJzdHlsZSI6eyJzdHJva2VTdHlsZSI6ImJsYWNrIiwibGluZVdpZHRoIjoxfX0sImRlc2NyaXB0aW9uIjoiTWFkZSB3aXRoIFNrZXRjaHBhZCIsIm1ldGFkYXRhIjp7fSwiZXhwb3J0RFBJIjo3MiwiZXhwb3J0Rm9ybWF0IjoicG5nIiwiZXhwb3J0UXVhbGl0eSI6MC45NSwidW5pdHMiOiJweCIsIndpZHRoIjozMDAsImhlaWdodCI6MjAwLCJwYWdlcyI6W3sid2lkdGgiOjMwMCwiaGVpZ2h0IjoyMDB9XSwidXVpZCI6IjgxZTU3N2I2LWE2ZmYtNDNkNS1hNGU3LWQ0ZWVmMThhMjVkOCJ9"
-                width="50"
-                height="200"
-                viewBox="0 0 300 200"
-              >
-                <path
-                  style="fill: #d7066f; stroke: #000000; mix-blend-mode: source-over; paint-order: stroke fill markers; fill-opacity: 1; stroke-dasharray: none; stroke-dashoffset: 0; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-opacity: 1; stroke-width: 4;"
-                  sketchjs:tool="path"
-                  d="M9.96 32.41 C31.96 5.41 54.96 -11.59 94.96 9.41 128.96 22.41 135.96 65.41 185.96 64.41 242.96 67.41 295.96 20.41 295.96 20.41 295.96 20.41 247.96 64.41 246.96 64.41 245.96 64.41 317.96 41.41 316.96 41.41 315.96 41.41 194.96 104.41 165.96 110.41 136.96 116.41 129.96 60.41 55.96 66.41 17.96 76.41 12.96 134.41 10.96 134.41 8.96 134.41 -12.04 59.41 9.96 32.41 z"
-                  transform="matrix(1,0,0,1,-15.9598774,34.5922776)"
-                />
-              </svg>
-            </div>
+      <!-- <div class="canvasWrapper"> -->
+      <div
+        id="canvas"
+        class="z-20"
+        on:keydown={(e) => snake.setDirection(e)}
+        on:touchstart={(e) => snake.touchstart(e)}
+        on:touchmove={(e) => snake.touchmove(e)}
+        on:touchend={(e) => snake.touchend(e)}
+        on:click={(e) => {
+          e.target.focus();
+        }}
+        on:mousedown={(e) => snake.mousedown(e)}
+        on:mouseup={(e) => snake.mouseup(e)}
+        role="button"
+        tabindex={0}
+        style="grid-template-columns: repeat({canvasWidth}, auto);"
+      >
+        {#each Array(canvasWidth * canvasHeight) as _, index (index)}
+          <div class="brick br{index}">
+            <!-- show tongue -->
+            {#if index === snake.body[0] && snake.status != snake.enumStatus.null}
+              <div class="face" style="rotate:{snake.headAngle}deg">
+                <div class="tongue">
+                  <svg
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    xmlns:sketchjs="https://sketch.io/dtd/"
+                    sketchjs:metadata="eyJuYW1lIjoiRHJhd2luZy0zLnNrZXRjaHBhZCIsInN1cmZhY2UiOnsiaXNQYWludCI6dHJ1ZSwibWV0aG9kIjoiZmlsbCIsImJsZW5kIjoibm9ybWFsIiwiZW5hYmxlZCI6dHJ1ZSwib3BhY2l0eSI6MSwidHlwZSI6InBhdHRlcm4iLCJwYXR0ZXJuIjp7InR5cGUiOiJwYXR0ZXJuIiwicmVmbGVjdCI6Im5vLXJlZmxlY3QiLCJyZXBlYXQiOiJyZXBlYXQiLCJzbW9vdGhpbmciOmZhbHNlLCJzcmMiOiJ0cmFuc3BhcmVudExpZ2h0Iiwic3giOjEsInN5IjoxLCJ4MCI6MC41LCJ4MSI6MSwieTAiOjAuNSwieTEiOjF9LCJpc0ZpbGwiOnRydWV9LCJjbGlwUGF0aCI6eyJlbmFibGVkIjp0cnVlLCJzdHlsZSI6eyJzdHJva2VTdHlsZSI6ImJsYWNrIiwibGluZVdpZHRoIjoxfX0sImRlc2NyaXB0aW9uIjoiTWFkZSB3aXRoIFNrZXRjaHBhZCIsIm1ldGFkYXRhIjp7fSwiZXhwb3J0RFBJIjo3MiwiZXhwb3J0Rm9ybWF0IjoicG5nIiwiZXhwb3J0UXVhbGl0eSI6MC45NSwidW5pdHMiOiJweCIsIndpZHRoIjozMDAsImhlaWdodCI6MjAwLCJwYWdlcyI6W3sid2lkdGgiOjMwMCwiaGVpZ2h0IjoyMDB9XSwidXVpZCI6IjgxZTU3N2I2LWE2ZmYtNDNkNS1hNGU3LWQ0ZWVmMThhMjVkOCJ9"
+                    width="50"
+                    height="200"
+                    viewBox="0 0 300 200"
+                  >
+                    <path
+                      style="fill: #d7066f; stroke: #000000; mix-blend-mode: source-over; paint-order: stroke fill markers; fill-opacity: 1; stroke-dasharray: none; stroke-dashoffset: 0; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-opacity: 1; stroke-width: 4;"
+                      sketchjs:tool="path"
+                      d="M9.96 32.41 C31.96 5.41 54.96 -11.59 94.96 9.41 128.96 22.41 135.96 65.41 185.96 64.41 242.96 67.41 295.96 20.41 295.96 20.41 295.96 20.41 247.96 64.41 246.96 64.41 245.96 64.41 317.96 41.41 316.96 41.41 315.96 41.41 194.96 104.41 165.96 110.41 136.96 116.41 129.96 60.41 55.96 66.41 17.96 76.41 12.96 134.41 10.96 134.41 8.96 134.41 -12.04 59.41 9.96 32.41 z"
+                      transform="matrix(1,0,0,1,-15.9598774,34.5922776)"
+                    />
+                  </svg>
+                </div>
+              </div>
+            {/if}
           </div>
-        {/if}
+        {/each}
       </div>
-    {/each}
+    </div>
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   :root {
     --br-height: 1px;
     --controlHeight: 50px;
@@ -529,6 +535,7 @@
     position: relative;
     aspect-ratio: 1/1;
     height: var(--br-height);
+    /* border: 1px solid black; */
   }
 
   .face {
@@ -548,36 +555,6 @@
     transform: translateY(-50%);
   }
   /* eyes */
-  .face::before {
-    content: ".";
-    vertical-align: top;
-    height: calc(var(--br-height) / 4);
-    line-height: 0;
-    text-align: right;
-    vertical-align: top;
-    font-size: calc(var(--br-height) / 2);
-    color: white;
-    background: black;
-    border-radius: 50%;
-    position: absolute;
-    aspect-ratio: 1/1;
-    top: 20%;
-    right: 20%;
-  }
-  .face::after {
-    content: ".";
-    line-height: 0;
-    text-align: right;
-    font-size: calc(var(--br-height) / 2);
-    color: white;
-    background: black;
-    border-radius: 50%;
-    position: absolute;
-    width: calc(var(--br-height) / 4);
-    aspect-ratio: 1/1;
-    bottom: 20%;
-    right: 20%;
-  }
 
   .body {
     background: black;
@@ -596,6 +573,20 @@
     border-left: none;
   }
   .bait {
-    background: rgba(255, 0, 0, 0.61);
+    background: rgba(28, 9, 9, 0.761);
+  }
+
+  .phone {
+    width: fit-content;
+    max-height: 100%;
+  }
+  .phoneImage {
+    max-height: 100%;
+  }
+  .screen {
+    inset: 26% 15% 52%;
+    border: 1px solid black;
+    background-color: rgb(118, 244, 111);
+    border-radius: 5% 5% 15% 15%;
   }
 </style>
