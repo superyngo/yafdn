@@ -21,13 +21,11 @@
   });
 
   function setCanvas() {
-    console.log(window.innerWidth);
     const contentWrapper = document.querySelector(".contentWrapper");
     const imgHeight =
       +getComputedStyle(contentWrapper)
         .getPropertyValue("height")
         .match(/\d+/)[0] - (window.innerWidth > 640 ? 90 : 15);
-    console.log(imgHeight);
     document.documentElement.style.setProperty(
       "--image-height",
       imgHeight + "px"

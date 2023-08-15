@@ -40,6 +40,31 @@ Demo：[Demo](https://superyngo.github.io/snake_svelte3/)
 既然基本功能都做好了  
 就想說套個 3310 的皮看看  
 螢幕的部分用比例去定位
+結果最後卡關在
+firefox 對`width=fit-content`的邏輯不如預期
+
+```css
+.phone {
+  @apply relative h-full m-auto border-4;
+  width: fit-content;
+}
+.phoneImage {
+  max-height: var(--image-height);
+}
+```
+
+phone 是 phoneImage 的 wrapper，  
+因為要用 phone 比例定位螢幕，  
+要設定他們一樣大  
+但因為 phoneImage 要 RWD，  
+原本設定`max-height: 100%`  
+在 chome 和 edge 都符合預期  
+但 firefox 的 wrapper 只要 content 的 height 不是固定值而是比例，  
+那`width: fit-content`就會直接變成 100%  
+![width fail](/workshop/width_fail.png)
+最後還是用 javascript 設定 image 的 height 才解決  
+頭很痛
+
 ![Demo](/workshop/snake3310.png)
 Demo：[Demo](https://yafdn.vercel.app/workshop/Notkia3310)
 
