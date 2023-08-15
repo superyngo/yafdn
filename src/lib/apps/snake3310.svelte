@@ -439,6 +439,14 @@
         id="canvas"
         class="z-20"
         style="grid-template-columns: repeat({canvasWidth}, auto);"
+        on:keydown={(e) => snake.setDirection(e)}
+        on:touchstart={(e) => snake.touchstart(e)}
+        on:touchmove={(e) => snake.touchmove(e)}
+        on:touchend={(e) => snake.touchend(e)}
+        on:mousedown={(e) => snake.mousedown(e)}
+        on:mouseup={(e) => snake.mouseup(e)}
+        role="button"
+        tabindex={0}
       >
         {#each Array(canvasWidth * canvasHeight) as _, index (index)}
           <div class="brick br{index}">
