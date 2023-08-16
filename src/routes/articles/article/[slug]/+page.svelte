@@ -1,7 +1,7 @@
 <script lang="ts">
   import {formatDate} from "$lib/utils";
   import Label from "$lib/components/label.svelte";
-  import Giscus from "$lib/components/Giscus.svelte";
+  import Giscus from "@giscus/svelte";
   export let data;
   const {metadata} = data.mdComp;
 </script>
