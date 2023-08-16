@@ -3,6 +3,7 @@
   import Label from "$lib/components/label.svelte";
   export let data;
   const {metadata} = data.mdComp;
+  import Giscus from "$lib/components/Giscus.svelte";
 </script>
 
 <!-- SEO -->
@@ -29,3 +30,20 @@
 <article class="prose py-5 mx-auto">
   <svelte:component this={data.mdComp.default} />
 </article>
+
+<Giscus
+  id="comments"
+  repo="superyngo/yafdn"
+  repoId="R_kgDOKGhedw"
+  category="Announcements"
+  categoryId="DIC_kwDOKGhed84CYobY"
+  mapping="pathname"
+  strict="0"
+  term="Welcome to @giscus/svelte component!"
+  reactionsEnabled="1"
+  emitMetadata="0"
+  inputPosition="top"
+  theme="light"
+  lang="en"
+  loading="lazy"
+/>
