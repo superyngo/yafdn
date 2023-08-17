@@ -1,6 +1,6 @@
 <script lang="ts">
 </script>
 
-```vue
-console.log(歡迎);
+```ts
+console.log("歡迎");
 ```
