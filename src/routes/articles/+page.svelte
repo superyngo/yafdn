@@ -5,43 +5,43 @@
   export let data;
 
   onMount(() => {
-    if (data.queryCategory) {
-      const selectedCategory = document.getElementById(data.queryCategory);
+    if (data.queryLabel) {
+      const selectedLabel = document.getElementById(data.queryLabel);
       const clickEvent = new MouseEvent("click", {
         bubbles: true,
         cancelable: true,
         view: window,
       });
-      selectedCategory && selectedCategory.dispatchEvent(clickEvent);
+      selectedLabel && selectedLabel.dispatchEvent(clickEvent);
     }
   });
 
-  let selectedCategories: string[] = [];
-  function setSelectedCategories(e: MouseEvent) {
+  let selectedLabels: string[] = [];
+  function setSelectedLabels(e: MouseEvent) {
     if (e.target.className === "clearButton") {
       return clearFilter();
     }
     if (e.target.tagName != "SPAN") return;
     if (e.target.className.match("pushed")) {
       e.target.classList.remove("pushed");
-      const spliced = [...selectedCategories];
-      spliced.splice(selectedCategories.indexOf(e.target.textContent), 1);
-      selectedCategories = [...spliced];
+      const spliced = [...selectedLabels];
+      spliced.splice(selectedLabels.indexOf(e.target.textContent), 1);
+      selectedLabels = [...spliced];
     } else {
       e.target.classList.add("pushed");
-      selectedCategories = [...selectedCategories, e.target.textContent];
+      selectedLabels = [...selectedLabels, e.target.textContent];
     }
   }
   function clearFilter() {
     const labels = document.querySelectorAll(".label");
     labels.forEach((l) => l.classList.remove("pushed"));
-    selectedCategories = [];
+    selectedLabels = [];
   }
 
   let postList;
   $: {
     const temp = data.postList.filter((p) =>
-      p.categories.some((c) => selectedCategories.includes(c))
+      p.labels.some((c) => selectedLabels.includes(c))
     );
     postList = temp[0] ? temp : data.postList;
   }
@@ -51,13 +51,9 @@
   <div class="labels">
     <button
       class="wrapper grow-0 sm:w-48 pushed"
-      on:click={(e) => setSelectedCategories(e)}
+      on:click={(e) => setSelectedLabels(e)}
     >
-      <Labels
-        data={{
-          categories: data.categories,
-        }}
-      />
+      <Labels labels={data.labels} />
       <button class="clearButton">clear</button>
     </button>
   </div>

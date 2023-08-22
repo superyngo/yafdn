@@ -2,8 +2,9 @@ export type Post = {
   slug: string;
   title: string;
   description: string;
-  date: string;
+  published: string;
+  updated: string;
   modified: string;
-  categories: string[];
-  published: boolean;
+  labels: string[];
+  isPublic: boolean;
 };

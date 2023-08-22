@@ -12,7 +12,7 @@
 </script>
 
 <div class="wrapper">
-  <ol class="flex">
+  <ol class="flex gap-4">
     {#each list as li}
       <li class="w-64">
         {li.title} <a href={li.href}> <img src={li.img} alt="" /></a>

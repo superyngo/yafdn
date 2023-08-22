@@ -18,13 +18,13 @@
 <!-- title -->
 <hgroup class=" duration-300">
   <h1 class="text-4xl leading-loose">{metadata.title}</h1>
-  <p>posted at {formatDate(metadata.date)}</p>
+  <p>posted at {formatDate(metadata.publishedAt)}</p>
 </hgroup>
 
 <!-- tags -->
-{#each metadata.categories as category}
-  <a href="/articles?category={category}">
-    <Label {category} />
+{#each metadata.labels as label}
+  <a href="/articles?label={label}">
+    <Label {label} />
   </a>
 {/each}
 <article class="prose py-5 mx-auto">

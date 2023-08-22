@@ -14,7 +14,8 @@
         <p class="text-xl">
           {post.title}
         </p>
-        <p>posted on {formatDate(post.date)}</p>
+        <p>posted on {formatDate(post.publishedAt)}</p>
+
         <p class="text-sm">{post.description}</p>
       </li>
     </a>

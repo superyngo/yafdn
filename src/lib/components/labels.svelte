@@ -1,10 +1,10 @@
 <script lang="ts">
-  export let data;
+  export let labels;
   import Label from "./label.svelte";
 </script>
 
 <ol>
-  {#each data.categories as category}
-    <Label {category} />
+  {#each labels as label}
+    <Label {label} />
   {/each}
 </ol>
