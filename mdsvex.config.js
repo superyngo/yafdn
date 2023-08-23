@@ -8,7 +8,7 @@ import {getHighlighter} from "shiki";
 const config = defineConfig({
   extensions: [".md", ".svx"],
   layout: {
-    _: "./src/lib/components/mdsvexCustom/mdsvex.layout.svelte",
+    _: "src/lib/components/mdsvexCustom/mdsvex.layout.svelte",
   },
   highlight: {
     highlighter: async (code, lang = "text") => {

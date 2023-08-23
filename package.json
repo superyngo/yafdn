@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
+    "build:md": "ts-node .scripts/pre/index.ts",
     "build": "vite build",
     "preview": "vite preview",
     "test": "npm run test:integration && npm run test:unit",
