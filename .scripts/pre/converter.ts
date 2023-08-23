@@ -2,15 +2,17 @@ import YAML from "yaml";
 import {DiscussionsType} from "./types";
 
 const splitMdx = (mdx: string) => {
-  const arr = mdx.split(/^(-{3}(?:\n|\r)([\w\W]+?)(?:\n|\r)-{3})/);
+  const arr = mdx.split(/^(?:-{3}[\n\r]([\w\W]+?)[\n\r]-{3})/);
   if (arr.length === 1) return [mdx];
-  const frontMatter = YAML.parse(arr[2].trim());
-  return [arr[3], frontMatter];
+  const frontMatter = YAML.parse(arr[1].trim());
+  if (!frontMatter.isPublic) return [null, null];
+  return [arr[2], frontMatter];
 };
 
 export const convertFrontMatter = (list: DiscussionsType[]) =>
-  list.map((node) => {
+  list.reduce((newList: DiscussionsType[], node) => {
     const [md, originalFrontMatter] = splitMdx(node.body);
+    if (!md) return newList;
 
     const frontMatter = {
       number: node.number,
@@ -26,5 +28,5 @@ export const convertFrontMatter = (list: DiscussionsType[]) =>
       originalFrontMatter ? "" : "\n"
     }`;
 
-    return {...node, body: `${frontMatterText}${md}`};
-  });
+    return [...newList, {...node, body: `${frontMatterText}${md}`}];
+  }, []);

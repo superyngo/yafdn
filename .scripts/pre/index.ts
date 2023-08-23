@@ -1,48 +1,42 @@
-import dotenv from 'dotenv';
-import { convertFrontMatter } from './converter.js';
-import { fetchUser, fetchAllDiscussions } from './fetcher.js';
-import { findConfig, filterPage as filterPage, filterPost } from './filter.js';
-import { writePosts, writePages, writeEnv } from './writer.js';
+import dotenv from "dotenv";
+import {convertFrontMatter} from "./converter.js";
+import {fetchUser, fetchAllDiscussions} from "./fetcher.js";
+import {filterAll} from "./filter.js";
+import {writePosts, writePages, writeEnv} from "./writer.js";
 
 dotenv.config();
-const env = process.env;
 
-const { login: user, url: githubUrl, bio } = await fetchUser();
+const {login: user, url: githubUrl, bio} = await fetchUser();
 let list = await fetchAllDiscussions(user);
 
-const config = findConfig(list);
+list = convertFrontMatter(list);
+const allList = await filterAll(list);
 
+const configList: string[][] = [
+  ["PAGE_SIZE"],
+  ["BLOG_NAME"],
+  ["BIO", bio],
+  ["EMAIL"],
+  ["TWITTER"],
+  ["DOMAIN"],
+  ["DESCRIPTION"],
+  ["KEYWORDS"],
+  ["REPOSITORY"],
+  ["LANGUAGE"],
+  ["COMMENT"],
+  ["TIMEZONE"],
+];
+const config = allList.config[0] ? dotenv.parse(allList.config[0].body) : {};
 config.NAME = user;
 config.GITHUB_URL = githubUrl;
-
-[
-	['PAGE_SIZE'],
-	['BLOG_NAME'],
-	['BIO', bio],
-	['EMAIL'],
-	['TWITTER'],
-	['DOMAIN'],
-	['DESCRIPTION'],
-	['KEYWORDS'],
-	['REPOSITORY'],
-	['LANGUAGE'],
-	['COMMENT'],
-	['TIMEZONE']
-].forEach(([key, value]) => {
-	const finalValue = config[key] || env[key] || value;
-	if (!finalValue) return;
-	config[key] = finalValue;
+configList.forEach(([key, value]) => {
+  const finalValue = config[key] || process.env[key] || value;
+  if (!finalValue) return;
+  config[key] = finalValue;
 });
-
-list = convertFrontMatter(list);
-
-const pages = filterPage(list);
-const posts = filterPost(list);
-
-console.log(`writing...`);
-
-await writePosts(posts);
-await writePages(pages);
 await writeEnv(config);
+
+await writePosts(allList.posts);
+await writePages(allList.pages);
 
 console.log(`done`);

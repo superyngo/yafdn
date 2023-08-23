@@ -12,7 +12,8 @@
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
     "test:integration": "playwright test",
-    "test:unit": "vitest"
+    "test:unit": "vitest",
+    "test:test": "ts-node ./test.ts"
   },
   "devDependencies": {
     "@fontsource/ibm-plex-mono": "^5.0.8",
@@ -20,6 +21,7 @@
     "@sveltejs/adapter-vercel": "^3.0.3",
     "@sveltejs/kit": "^1.22.5",
     "@tailwindcss/typography": "^0.5.9",
+    "@types/node": "^20.5.3",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.14",
@@ -44,10 +46,7 @@
     "typescript": "^5.1.6",
     "vite": "^4.4.9",
     "vitest": "^0.32.4",
-    "yaml": "^2.3.1"
-  },
-  "type": "module",
-  "dependencies": {
+    "yaml": "^2.3.1",
     "@giscus/svelte": "^2.3.0",
     "@rollup/plugin-alias": "^5.0.0",
     "@vercel/postgres": "^0.4.1",
@@ -58,5 +57,7 @@
     "remark-toc": "^8.0.1",
     "remark-unwrap-images": "^3.0.1",
     "shiki": "^0.14.3"
-  }
+  },
+  "type": "module",
+  "dependencies": {}
 }

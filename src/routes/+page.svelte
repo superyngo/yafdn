@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Home from "./home.md";
+  import Home from "$md/pages/Home.md";
 </script>
 
 <h1 class="text-4xl leading-loose animate-bounce hover:animate-spin">歡迎</h1>
