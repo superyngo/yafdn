@@ -5,7 +5,7 @@
 
 <ol>
   {#each data.postList as post}
-    <a href="/articles/article/{post.slug}">
+    <a href="/articles/{post.year}/{post.month}/{post.date}/{post.number}">
       <li
         class="p-6 border border-gray-200 rounded-lg mb-3 shadow duration-300
         hover:bg-gray-400

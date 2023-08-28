@@ -1,19 +1,20 @@
 import dotenv from "dotenv";
-import {DiscussionsType} from "./types";
 dotenv.config();
 
-const configCategoryName = process.env.CONFIG_CATEGORY || "Config";
-const postCategoryName = process.env.POST_CATEGORY || "Post";
-const pageCategoryName = process.env.PAGE_CATEGORY || "Page";
+import {DiscussionsType} from "./types";
+
+const configCategoryName = process.env.CONFIG_CATEGORY || "config";
+const postCategoryName = process.env.POST_CATEGORY || "posts";
+const pageCategoryName = process.env.PAGE_CATEGORY || "pages";
 
 interface DiscussionObject {
-  [property: string]: DiscussionsType[];
+  [propertyName: string]: DiscussionsType[];
 }
 
 export const filterAll = (list: DiscussionsType[]) => {
   return list.reduce(
-    (newList: DiscussionObject, li) => {
-      newList[li.category.name].push(li);
+    (newList: DiscussionObject, md) => {
+      newList[md.category.name].push(md);
       return newList;
     },
     {

@@ -3,7 +3,6 @@
   import Articles from "$lib/components/Articles.svelte";
   import Labels from "$lib/components/labels.svelte";
   export let data;
-
   onMount(() => {
     if (data.queryLabel) {
       const selectedLabel = document.getElementById(data.queryLabel);
@@ -40,10 +39,10 @@
 
   let postList;
   $: {
-    const temp = data.postList.filter((p) =>
-      p.labels.some((c) => selectedLabels.includes(c))
+    const filterPostList = data.postList.filter((p) =>
+      p.labels.nodes.some((c) => selectedLabels.includes(c.name))
     );
-    postList = temp[0] ? temp : data.postList;
+    postList = filterPostList[0] ? filterPostList : data.postList;
   }
 </script>
 

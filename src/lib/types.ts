@@ -1,10 +1,12 @@
 export type Post = {
+  number: number;
   slug: string;
   title: string;
   description: string;
-  published: string;
-  updated: string;
-  modified: string;
+  publishedAt: string;
+  lastEditedAt: string;
+  url: string;
   labels: string[];
-  isPublic: boolean;
 };
+
+export type Module = {default: {}; metadata: {}};

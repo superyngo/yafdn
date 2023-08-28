@@ -22,8 +22,8 @@
 </hgroup>
 
 <!-- tags -->
-{#each metadata.labels as label}
-  <a href="/articles?label={label}">
+{#each metadata.labels.nodes as label}
+  <a href="/articles?label={label.name}" class="mr-1 last:mr-0">
     <Label {label} />
   </a>
 {/each}

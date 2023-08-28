@@ -1,17 +1,16 @@
 import {json} from "@sveltejs/kit";
-import type {Post} from "$lib/types";
+import type {Post, Module} from "$lib/types";
 
 async function getPosts() {
   let posts: Post[] = [];
 
   const paths = import.meta.glob(`/src/md/posts/*.md`, {eager: true});
   for (const path in paths) {
-    const file = paths[path];
-    const slug = path.split("/").at(-1)?.replace(".md", "");
+    const file: Module = paths[path] as Module;
+    const slug = path.split("/").at(-1)?.replace(".md", "") as string;
     if (file && typeof file === "object" && file.metadata) {
-      const metadata = file.metadata as Omit<Post, "slug">;
-      const post = {...metadata, slug} satisfies Post;
-      post.isPublic && posts.push(post);
+      const post = {...file.metadata, slug} as Post;
+      posts.push(post);
     }
   }
   posts = posts.sort(

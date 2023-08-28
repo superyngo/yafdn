@@ -36,12 +36,87 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.writeEnv = exports.writePages = exports.writePosts = void 0;
+exports.writeEnv = exports.writePages = exports.writePosts = exports.writePostsMetaList = exports.writeLabelsList = exports.cleanAll = void 0;
+var dotenv_1 = require("dotenv");
+dotenv_1["default"].config();
 var path_1 = require("path");
 var fs_1 = require("fs");
 var configPath = process.env.CONFIG_PATH || "./.env.local";
-var postPath = process.env.POST_PATH || "./src/posts.md";
-var pagePath = process.env.PAGE_PATH || "./src/routes/_page";
+var postPath = process.env.POST_PATH || "./src/md/posts";
+var pagePath = process.env.PAGE_PATH || "./src/md/pages";
+var ListPath = process.env.LIST_PATH || "./src/md/lists";
+exports.cleanAll = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        [postPath, pagePath].forEach(function (path) {
+            fs_1.stat(path, function (err, stats) { return __awaiter(void 0, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (!err) return [3 /*break*/, 1];
+                            if (err.code === "ENOENT") {
+                                console.log(path + " directory does not exist.");
+                            }
+                            else {
+                                console.error("An error occurred:", err);
+                            }
+                            return [3 /*break*/, 4];
+                        case 1:
+                            if (!stats.isDirectory()) return [3 /*break*/, 3];
+                            console.log(path + " path deleted");
+                            return [4 /*yield*/, fs_1.promises.rm(path, { recursive: true })];
+                        case 2:
+                            _a.sent();
+                            return [3 /*break*/, 4];
+                        case 3:
+                            console.log(path + " path exists, but it is not a directory.");
+                            _a.label = 4;
+                        case 4: return [2 /*return*/];
+                    }
+                });
+            }); });
+        });
+        return [2 /*return*/];
+    });
+}); };
+exports.writeLabelsList = function (labelsList) { return __awaiter(void 0, void 0, void 0, function () {
+    var dir, p;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                dir = path_1["default"].join(ListPath);
+                fs_1.mkdirSync(dir, { recursive: true });
+                p = path_1["default"].resolve(dir, "labelsList.json");
+                return [4 /*yield*/, fs_1.promises.writeFile(p, JSON.stringify(labelsList))];
+            case 1:
+                _a.sent();
+                console.log("Labels list written");
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.writePostsMetaList = function (list) { return __awaiter(void 0, void 0, void 0, function () {
+    var PostsMetaList, dir, p;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                PostsMetaList = structuredClone(list);
+                PostsMetaList.sort(function (a, b) {
+                    return (new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime());
+                });
+                PostsMetaList.forEach(function (li) {
+                    delete li.body;
+                });
+                dir = path_1["default"].join(ListPath);
+                fs_1.mkdirSync(dir, { recursive: true });
+                p = path_1["default"].resolve(dir, "postsMetaList.json");
+                return [4 /*yield*/, fs_1.promises.writeFile(p, JSON.stringify(PostsMetaList))];
+            case 1:
+                _a.sent();
+                console.log("PostsMetaList list written");
+                return [2 /*return*/];
+        }
+    });
+}); };
 exports.writePosts = function (list) { return __awaiter(void 0, void 0, void 0, function () {
     var dir;
     return __generator(this, function (_a) {
@@ -56,6 +131,7 @@ exports.writePosts = function (list) { return __awaiter(void 0, void 0, void 0, 
                     }))];
             case 1:
                 _a.sent();
+                console.log(list.length + " posts written");
                 return [2 /*return*/];
         }
     });
@@ -74,6 +150,7 @@ exports.writePages = function (list) { return __awaiter(void 0, void 0, void 0, 
                     }))];
             case 1:
                 _a.sent();
+                console.log(list.length + " pages written");
                 return [2 /*return*/];
         }
     });

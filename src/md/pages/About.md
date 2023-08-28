@@ -1,12 +1,14 @@
 ---
 number: 7
 title: About
+createdAt: 2023-08-16T01:04:27Z
 publishedAt: 2023-08-16T01:04:27Z
 lastEditedAt: 2023-08-22T05:27:17Z
 url: https://github.com/superyngo/hakuba_template/discussions/7
+category:
+  name: pages
 labels:
-  - name: bug
-    color: d73a4a
+  nodes: []
 ---
 Hi 我是 Wen  
 努力學習前端技術  

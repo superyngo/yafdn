@@ -1,92 +1,184 @@
-import fetch from 'node-fetch';
-import dotenv from 'dotenv';
-import { DiscussionsType, FetchDiscussionsType, FetchViewerType } from './types';
-
+import dotenv from "dotenv";
 dotenv.config();
 
+import fetch from "node-fetch";
+import {
+  DiscussionsType,
+  fetchPagesType,
+  FetchViewerType,
+  fetchPagesConfigType,
+  LabelsType,
+} from "./types";
+
+const githubGQLEndpoint = "https://api.github.com/graphql";
+const REPOSITORY = process.env.REPOSITORY as string;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
 const fetchData = async <T>(query: string) => {
-	const res = await fetch('https://api.github.com/graphql', {
-		method: 'POST',
-		headers: {
-			Authorization: `bearer ${process.env.GITHUB_TOKEN}`
-		},
-		body: JSON.stringify({ query })
-	});
-
-	const json: any = await res.json();
-
-	if (json.errors) {
-		throw new Error(JSON.stringify(json.errors, null, 2));
-	}
-
-	return json.data as T;
+  try {
+    const res = await fetch(githubGQLEndpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `bearer ${GITHUB_TOKEN}`,
+        "Content-Type": "application/json", // Add this header for JSON content
+      },
+      body: query,
+    });
+    const json: any = await res.json();
+    return json.data as T;
+  } catch (e: unknown) {
+    console.error("Error:", e); // Log the error message
+    throw new Error("Error fetching data."); // Rethrow the error
+  }
 };
 
 export const fetchUser = async () => {
-	console.log('fetching... user');
-	const user = (
-		await fetchData<FetchViewerType>(`
-{
-	viewer {
-		login
-		url
-		bio
-	}
-}`)
-	).viewer;
-	console.log('user:', user.login);
-	return user;
+  console.log("fetching... user");
+  const query = `{
+    viewer {
+      login
+      url
+      bio
+    }
+  }`;
+  const user = (
+    await fetchData<FetchViewerType>(JSON.stringify({query: query}))
+  ).viewer;
+  console.log("user:", user.login);
+  return user;
 };
 
-export const fetchDiscussions = async (owner: string, after?: string) => {
-	console.log(`fetching discussions... endCursor: ${after}`);
-	return (
-		await fetchData<FetchDiscussionsType>(`
-{
-  repository(owner: "${owner}", name: "${process.env.REPOSITORY}") {
-    discussions(first: 100, ${
-			after ? `after: "${after}",` : ''
-		} orderBy: {field: CREATED_AT, direction: DESC}) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        number
-        title
-        createdAt
-		publishedAt
-        lastEditedAt
-        url
-        body
-		category {
-			name
-		}
-        labels(first: 100) {
+export const fetchPages = async <T>(fetchConfig: fetchPagesConfigType) => {
+  const {fetchName, query, variables} = fetchConfig;
+  console.log(
+    `fetching ${fetchName}... endCursor: ${variables.lastPageEndCursor}`
+  );
+  return (
+    await fetchData<fetchPagesType<T>>(
+      JSON.stringify({
+        query: query,
+        variables: variables,
+      })
+    )
+  ).repository[fetchName];
+};
+
+export const fetchAllPages = async <T>(fetchConfig: fetchPagesConfigType) => {
+  let list: T[] = [];
+  while (true) {
+    const {nodes, pageInfo} = await fetchPages<T>(fetchConfig);
+    list = list.concat(nodes as T[]);
+    if (!pageInfo.hasNextPage) break;
+    fetchConfig.variables.lastPageEndCursor = pageInfo.endCursor;
+  }
+  console.log(`fetched ${list.length} ${fetchConfig.fetchName}`);
+  return list;
+};
+
+export const fetchAllDiscussions = async (owner: string) => {
+  const fetchName = "discussions";
+  const variables = {
+    owner,
+    REPOSITORY,
+    lastPageEndCursor: undefined,
+  };
+  const query = `
+    query FetchDiscussionsWithIsPublicLabel($owner: String!, $REPOSITORY: String!, $lastPageEndCursor: String) {
+      repository(owner: $owner, name: $REPOSITORY) {
+        discussions(first: 100, after: $lastPageEndCursor, orderBy: {field: CREATED_AT, direction: DESC}) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
           nodes {
-            name
-            color
+            number
+            title
+            createdAt
+            publishedAt
+            lastEditedAt
+            url
+            body
+            category {
+              name
+            }
+            labels(first: 100) {
+              nodes {
+                name
+                color
+              }
+            }
           }
         }
       }
     }
-  }
-}
-`)
-	).repository.discussions;
+  `;
+  const fetchConfig = {fetchName, query, variables};
+  let list = await fetchAllPages<DiscussionsType>(fetchConfig);
+  return list;
 };
 
-export const fetchAllDiscussions = async (user: string) => {
-	let endCursor;
-	let list: DiscussionsType[] = [];
-	// eslint-disable-next-line no-constant-condition
-	while (true) {
-		const { nodes, pageInfo } = await fetchDiscussions(user, endCursor);
-		list = list.concat(nodes);
-		if (!pageInfo.hasNextPage) break;
-		endCursor = pageInfo.endCursor;
-	}
+// export const fetchDiscussion = async (owner: string) => {
+//   const fetchName = "discussion";
+//   const variables = {
+//     owner,
+//     REPOSITORY,
+//     discussionNumber: 13,
+//   };
+//   const query = `
+//   query FetchDiscussionByNumber($owner: String!, $REPOSITORY: String!, $discussionNumber: Int!) {
+//     repository(owner: $owner, name: $REPOSITORY) {
+//       discussion(number: $discussionNumber) {
+//         number
+//         title
+//         createdAt
+//         publishedAt
+//         lastEditedAt
+//         url
+//         body
+//         category {
+//           name
+//         }
+//         labels(first: 100) {
+//           nodes {
+//             name
+//             color
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+//   const fetchConfig = {fetchName, query, variables};
+//   let list = await fetchPages<DiscussionsType>(fetchConfig);
+//   return list;
+// };
 
-	console.log(`fetched ${list.length} discussions`);
-	return list;
+export const fetchAllLabels = async (owner: string) => {
+  const fetchName = "labels";
+  const variables = {
+    owner,
+    REPOSITORY,
+    lastPageEndCursor: undefined,
+  };
+  const query = `
+  query GetRepositoryLabels($owner: String!, $REPOSITORY: String!) {
+    repository(owner: $owner, name: $REPOSITORY) {
+      labels(first: 100) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          name
+          color
+        }
+      }
+    }
+  }
+`;
+  const fetchConfig = {fetchName, query, variables};
+  let list = await fetchAllPages<LabelsType>(fetchConfig);
+  return list.reduce((newList: LabelsType[], label) => {
+    return label.name === "isPublic" ? newList : newList.concat(label);
+  }, []);
 };

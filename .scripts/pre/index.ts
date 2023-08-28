@@ -1,21 +1,36 @@
 import dotenv from "dotenv";
-import {convertFrontMatter} from "./converter.js";
-import {fetchUser, fetchAllDiscussions} from "./fetcher.js";
-import {filterAll} from "./filter.js";
-import {writePosts, writePages, writeEnv} from "./writer.js";
-
 dotenv.config();
 
-const {login: user, url: githubUrl, bio} = await fetchUser();
-let list = await fetchAllDiscussions(user);
+import {convertFrontMatter} from "./converter.js";
+import {fetchUser, fetchAllDiscussions, fetchAllLabels} from "./fetcher.js";
+import {filterAll} from "./filter.js";
+import {
+  cleanAll,
+  writePosts,
+  writePages,
+  writeEnv,
+  writeLabelsList,
+  writePostsMetaList,
+} from "./writer.js";
 
-list = convertFrontMatter(list);
-const allList = await filterAll(list);
+await cleanAll();
 
+const {login: owner, url: githubUrl, bio} = await fetchUser();
+const Labels = await fetchAllLabels(owner);
+let Mds = await fetchAllDiscussions(owner);
+Mds = convertFrontMatter(Mds);
+
+const sortedMds = await filterAll(Mds);
+
+const config = sortedMds.config[0]
+  ? dotenv.parse(sortedMds.config[0].body)
+  : {};
 const configList: string[][] = [
   ["PAGE_SIZE"],
   ["BLOG_NAME"],
   ["BIO", bio],
+  ["OWNER", owner],
+  ["GITHUB_URL", githubUrl],
   ["EMAIL"],
   ["TWITTER"],
   ["DOMAIN"],
@@ -26,17 +41,16 @@ const configList: string[][] = [
   ["COMMENT"],
   ["TIMEZONE"],
 ];
-const config = allList.config[0] ? dotenv.parse(allList.config[0].body) : {};
-config.NAME = user;
-config.GITHUB_URL = githubUrl;
 configList.forEach(([key, value]) => {
   const finalValue = config[key] || process.env[key] || value;
   if (!finalValue) return;
   config[key] = finalValue;
 });
-await writeEnv(config);
 
-await writePosts(allList.posts);
-await writePages(allList.pages);
+await writeEnv(config);
+await writeLabelsList(Labels);
+await writePostsMetaList(sortedMds.posts);
+await writePosts(sortedMds.posts);
+await writePages(sortedMds.pages);
 
 console.log(`done`);

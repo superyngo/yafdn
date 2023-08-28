@@ -1,39 +1,65 @@
+import {Interface} from "readline";
+
+export interface PageInfo {
+  hasNextPage: boolean;
+  endCursor?: string;
+}
+
 export interface FetchViewerType {
-	viewer: {
-		login: string;
-		url: string;
-		bio: string;
-	};
+  viewer: {
+    login: string;
+    url: string;
+    bio: string;
+  };
+}
+
+export interface fetchPagesType<T> {
+  repository: {
+    [fetchName: string]: {
+      pageInfo: PageInfo;
+      nodes: T[];
+    };
+  };
+}
+
+export interface fetchPagesConfigType {
+  fetchName: string;
+  query: string;
+  variables: {
+    owner: string;
+    REPOSITORY: string;
+    [variable: string]: string | number | undefined | any[];
+  };
 }
 
 export interface DiscussionsType {
-	number: number;
-	title: string;
-	createdAt: string;
-	publishedAt: string;
-	lastEditedAt?: string;
-	url: string;
-	body: string;
-	category: {
-		name: string;
-	};
-	labels: {
-		nodes: {
-			name: string;
-			color: string;
-		}[];
-	};
+  number: number;
+  title: string;
+  createdAt: string;
+  publishedAt: string;
+  lastEditedAt?: string;
+  url: string;
+  body: string;
+  category: {
+    name: string;
+  };
+  labels: {
+    nodes:
+      | {
+          name: string;
+          color: string;
+        }[]
+      | {
+          name: string;
+          color: string;
+        }[];
+  };
+  year?: number;
+  month?: number;
+  date?: number;
 }
 
-export interface PageInfo {
-	hasNextPage: boolean;
-	endCursor?: string;
-}
-export interface FetchDiscussionsType {
-	repository: {
-		discussions: {
-			pageInfo: PageInfo;
-			nodes: DiscussionsType[];
-		};
-	};
+export interface LabelsType {
+  name: string;
+  color: string;
 }
