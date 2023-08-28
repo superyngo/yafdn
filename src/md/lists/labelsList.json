@@ -1,9 +1,1 @@
-[
-  {"name": "svelte/kit", "color": "f9d0c4"},
-  {"name": "github", "color": "7B5A6D"},
-  {"name": "javcascript", "color": "509AB1"},
-  {"name": "開發筆記", "color": "F907A6"},
-  {"name": "markdown", "color": "F255B2"},
-  {"name": "Postgres", "color": "CC87D9"},
-  {"name": "database", "color": "7A17AA"}
-]
+[{"name":"svelte/kit","color":"f9d0c4"},{"name":"github","color":"7B5A6D"},{"name":"javcascript","color":"509AB1"},{"name":"開發筆記","color":"F907A6"},{"name":"markdown","color":"F255B2"},{"name":"Postgres","color":"CC87D9"},{"name":"database","color":"7A17AA"},{"name":"GraphQL","color":"3D6DF8"}]

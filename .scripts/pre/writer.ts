@@ -43,7 +43,7 @@ export const writePostsMetaList = async (list: DiscussionsType[]) => {
   const PostsMetaList = structuredClone(list) as {[property: string]: any}[];
   PostsMetaList.sort((a, b) => {
     return (
-      new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
+      -new Date(a.publishedAt).getTime() + new Date(b.publishedAt).getTime()
     );
   });
   PostsMetaList.forEach((li) => {

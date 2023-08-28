@@ -101,7 +101,7 @@ exports.writePostsMetaList = function (list) { return __awaiter(void 0, void 0, 
             case 0:
                 PostsMetaList = structuredClone(list);
                 PostsMetaList.sort(function (a, b) {
-                    return (new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime());
+                    return (-new Date(a.publishedAt).getTime() + new Date(b.publishedAt).getTime());
                 });
                 PostsMetaList.forEach(function (li) {
                     delete li.body;
