@@ -36,8 +36,8 @@ async function getGithubList(googleSheetsEnv: GoogleSheetsEnv) {
   ];
 
   const jwt = new google.auth.JWT({
-    email: creds?.client_email || process.env.JWT_private_key,
-    key: creds?.private_key || process.env.JWT_client_email,
+    email: creds?.client_email || process.env.JWT_client_email,
+    key: creds?.private_key || process.env.JWT_private_key,
     scopes,
   });
   console.log(jwt);
