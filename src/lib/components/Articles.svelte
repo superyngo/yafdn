@@ -15,8 +15,9 @@
           {post.title}
         </p>
         <p>posted on {formatDate(post.publishedAt)}</p>
-
-        <p class="text-sm">{post.description}</p>
+        {#if post.description}
+          <p class="text-sm">{post.description}</p>
+        {/if}
       </li>
     </a>
   {/each}

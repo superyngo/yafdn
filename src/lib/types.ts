@@ -10,3 +10,9 @@ export type Post = {
 };
 
 export type Module = {default: {}; metadata: {}};
+
+export type GoogleSheetsEnv = {
+  docID: string;
+  sheetID: number;
+  credentialsName: string;
+};
