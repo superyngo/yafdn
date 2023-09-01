@@ -1,13 +1,18 @@
 <script lang="ts">
   export let data;
-  console.log(data);
 </script>
 
 <div>
   <a href="/projects/testApiWebhook">test</a>
   <form method="post" action="?/testPost">
-    <label for="testInput">TEST Input </label>
-    <input id="testInput" type="text" name="testInput" autocomplete="on" />
+    <p>
+      <label for="queryName">queryName Input </label>
+      <input id="queryName" type="text" name="queryName" autocomplete="on" />
+    </p>
+    <p>
+      <label for="queryString">queryString Input </label>
+      <textarea id="queryString" name="queryString" autocomplete="on" />
+    </p>
     <button>submit</button>
   </form>
 </div>
