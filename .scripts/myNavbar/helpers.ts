@@ -1,24 +1,14 @@
+import type {obj, GoogleSheetsEnv} from "$lib/types";
 import {GoogleSpreadsheet} from "google-spreadsheet";
 import {google} from "googleapis";
 import {readFile, writeFile} from "fs/promises";
-
-interface obj {
-  [property: string]: string;
-}
-type GoogleSheetsEnv = {
-  docID: string;
-  sheetID: number;
-  credentialsPath: string;
-};
 
 export async function getGithubList(
   googleSheetsEnv: GoogleSheetsEnv,
   rowNames,
   reverse: boolean = true
 ) {
-  const {docID, sheetID, credentialsPath} = googleSheetsEnv;
-
-  const creds = JSON.parse(await readFile(credentialsPath, "utf8"));
+  const {docID, sheetID} = googleSheetsEnv;
 
   const scopes = [
     "https://www.googleapis.com/auth/spreadsheets",

@@ -9,4 +9,12 @@ export type Post = {
   labels: string[];
 };
 
-export type Module = {default: {}; metadata: {}};
+export type Module = {default: obj; metadata: obj};
+
+export interface obj {
+  [property: string]: string;
+}
+export type GoogleSheetsEnv = {
+  docID: string;
+  sheetID: number;
+};

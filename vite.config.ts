@@ -6,6 +6,7 @@ import {loadEnv} from "vite";
 
 export default ({mode}) => {
   // This check is important!
+  console.log(mode);
   if (mode === "development") {
     const env = loadEnv(mode, process.cwd(), "");
     dotenvExpand.expand({parsed: env});
