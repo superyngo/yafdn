@@ -49,11 +49,12 @@ export async function GET(request) {
   return json(myNavbarList);
 }
 
-export async function POST({url}) {
+export async function POST({url, request}) {
   let response;
-  const data = url.searchParams.get("updateList");
-  if (data) {
-    myNavbarList = JSON.parse(data);
+  const queryName = url.searchParams.get("updateProjectList");
+  const data = JSON.parse(await request.text());
+  if (queryName) {
+    myNavbarList = data;
     response = {
       status: "success",
       message: "Update successfully",

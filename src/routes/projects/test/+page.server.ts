@@ -9,13 +9,13 @@ export const actions = {
       data.get("queryString"),
     ];
 
-    fetch(`/api/getGithubList?${queryName}=${data.get("queryString")}`, {
+    fetch(`/api/getGithubList?${queryName}=true`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Adjust the content type as needed
         // Other headers if required
       },
-      body: JSON.stringify(data), // Convert your data to JSON format
+      body: queryString, // Convert your data to JSON format
     })
       .then((response) => {
         if (!response.ok) {
