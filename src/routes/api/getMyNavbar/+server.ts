@@ -1,18 +1,20 @@
 import type {obj, GoogleSheetsEnv} from "$lib/types";
 import {json} from "@sveltejs/kit";
 import {GoogleSpreadsheet} from "google-spreadsheet";
+import type {GoogleSpreadsheetRow} from "google-spreadsheet";
 import {google} from "googleapis";
+import {env} from "$env/dynamic/private";
+// import {writeFile} from "fs/promises";
 
 //set parameters
 const googleSheetsEnv = {
   docID: "1qiQk_cpa-2W26a3djoXJh_zR9Ay3CGphO01ceAf91zE",
   sheetID: 0,
 };
-const rowNames = ["title", "link", "imgName"];
 
 const getGithubList = async function (
   googleSheetsEnv: GoogleSheetsEnv,
-  rowNames: string[],
+  // headerRow: string[],
   reverse: boolean = true
 ) {
   const {docID, sheetID} = googleSheetsEnv;
@@ -22,19 +24,22 @@ const getGithubList = async function (
   ];
 
   const jwt = new google.auth.JWT({
-    email: process.env.Google_JWT_client_email,
-    key: process.env.Google_JWT_private_key,
+    email: env.Google_JWT_client_email,
+    key: env.Google_JWT_private_key,
     scopes,
   });
 
   const doc = new GoogleSpreadsheet(docID, jwt);
   await doc.loadInfo();
   const sheet = doc.sheetsById[sheetID];
+  await sheet.loadHeaderRow(); // Load the header row
+  const headerRow = sheet.headerValues;
+
   const result: any[] = [];
   const rows = await sheet.getRows();
-  rows.forEach((row) => {
+  rows.forEach((row: GoogleSpreadsheetRow) => {
     result.push(
-      rowNames.reduce((obj, name) => {
+      headerRow.reduce((obj, name) => {
         obj[name] = row.get(name);
         return obj;
       }, {} as obj)
@@ -43,7 +48,12 @@ const getGithubList = async function (
   return reverse ? result.reverse() : result;
 };
 
-let myNavbarList: string[] = await getGithubList(googleSheetsEnv, rowNames);
+let myNavbarList: string[] = await getGithubList(googleSheetsEnv);
+
+// await writeFile(
+//   "src/md/lists/myNavbarOfGithubList.json",
+//   JSON.stringify(myNavbarList, null, 2)
+// );
 
 export async function GET(request) {
   return json(myNavbarList);

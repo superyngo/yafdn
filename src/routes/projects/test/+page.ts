@@ -1,3 +1,4 @@
-export async function load({ data }) {
-	return data;
+export async function load({data}) {
+  data.test = "test";
+  return data;
 }

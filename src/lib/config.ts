@@ -1,9 +1,7 @@
-import { dev } from '$app/environment';
+import {dev} from "$app/environment";
 
-const config = {
-	title: 'YA前開筆',
-	description: 'Yet Another 前端開發筆記',
-	url: dev ? 'http://localhost:5173' : 'https://joyofcode.xyz'
+export const config = {
+  title: "YA前開筆",
+  description: "Yet Another 前端開發筆記",
+  url: dev ? "http://localhost:5173" : "https://yafdn.vercel.app",
 };
-
-export { config };
