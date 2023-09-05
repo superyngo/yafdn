@@ -15,6 +15,6 @@ export async function GET(request) {
 export async function POST({request}) {
   const requestBody = await request.text();
   const jsonData = JSON.parse(requestBody);
-  console.log("jsonData", Object.keys(jsonData));
+  console.log("action", jsonData.action);
   return json(jsonData);
 }
