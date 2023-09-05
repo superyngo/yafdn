@@ -12,8 +12,9 @@ export async function GET(request) {
   }
   return json(response + "");
 }
-export async function POST(request) {
-  const query = request.url.searchParams.get("postData");
-  let response = query;
-  return json(response);
+export async function POST({request}) {
+  const requestBody = await request.text();
+  const jsonData = JSON.parse(requestBody);
+  console.log("jsonData", jsonData);
+  return json({message: "Request body received successfully"});
 }

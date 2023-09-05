@@ -14,27 +14,30 @@ const googleSheetsEnv = {
 
 const getGithubList = async function (
   googleSheetsEnv: GoogleSheetsEnv,
-  // headerRow: string[],
   reverse: boolean = true
 ) {
+  //設定docID及sheetID
   const {docID, sheetID} = googleSheetsEnv;
   const scopes = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
   ];
 
+  //設定服務帳號帳密
   const jwt = new google.auth.JWT({
     email: env.Google_JWT_client_email,
     key: env.Google_JWT_private_key,
     scopes,
   });
 
+  //載入sheet及Header Row
   const doc = new GoogleSpreadsheet(docID, jwt);
   await doc.loadInfo();
   const sheet = doc.sheetsById[sheetID];
   await sheet.loadHeaderRow(); // Load the header row
   const headerRow = sheet.headerValues;
 
+  //將資料寫入result
   const result: any[] = [];
   const rows = await sheet.getRows();
   rows.forEach((row: GoogleSpreadsheetRow) => {

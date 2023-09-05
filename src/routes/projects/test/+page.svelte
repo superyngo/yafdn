@@ -17,7 +17,7 @@
 
 <div>
   <a href="/projects/testApiWebhook">test</a>
-  <form method="POST" action="?/testPost">
+  <form method="POST" action="?/testApiWebhook">
     <p>
       <label for="queryName">queryName Input </label>
       <input id="queryName" type="text" name="queryName" autocomplete="on" />
