@@ -37,7 +37,7 @@ export const actions = {
       data.get("queryName"),
       data.get("queryString"),
     ];
-
+    let form;
     await fetch(`/projects/testApiWebhook`, {
       method: "POST",
       headers: {
@@ -53,12 +53,13 @@ export const actions = {
         return response.json(); // Parse the JSON response
       })
       .then((data) => {
-        console.log(data); // Process the response data
+        console.log("data", data);
+        form = data;
       })
       .catch((error) => {
         console.error("Fetch error:", error);
       });
-    return {success: queryName};
+    return {testApiWebhook: form}; // Process the response data
   },
   testNumber: async ({request}) => {
     const num = Number((await request.formData()).get("testNumber"));

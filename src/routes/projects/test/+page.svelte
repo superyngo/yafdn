@@ -2,6 +2,7 @@
   import {page} from "$app/stores";
   export let data;
   export let form;
+  console.log("form", form);
 
   async function test(event: Event) {
     const formEl = event.target as HTMLFormElement;
@@ -40,4 +41,9 @@
       <p>{form.testResult}</p>
     {/if}
   </form>
+</div>
+<div>
+  {#if form?.testApiWebhook}
+    {form.testApiWebhook}
+  {/if}
 </div>
