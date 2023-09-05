@@ -15,4 +15,5 @@ export async function GET(request) {
 export async function POST(request) {
   const query = request.url.searchParams.get("postData");
   let response = query;
+  return json(response);
 }
