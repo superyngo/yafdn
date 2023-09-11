@@ -47,3 +47,14 @@
     {form.testApiWebhook}
   {/if}
 </div>
+<kbd>↑</kbd>
+<kbd>↑</kbd>
+<kbd>↓</kbd>
+<kbd>↓</kbd>
+<kbd>←</kbd>
+<kbd>→</kbd>
+<kbd>←</kbd>
+<kbd>→</kbd>
+<kbd>B</kbd>
+<kbd>A</kbd>
+<kbd>Start</kbd>

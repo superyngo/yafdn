@@ -4,11 +4,16 @@ import remarkToc from "remark-toc";
 import rehypeSlug from "rehype-slug";
 import {escapeSvelte} from "mdsvex";
 import {getHighlighter} from "shiki";
+import {join} from "path";
+const path_to_layout = join(
+  process.cwd(),
+  "./src/lib/components/mdsvexCustom/mdsvexPosts.layout.svelte"
+);
 
 const config = defineConfig({
   extensions: [".md", ".svx"],
   layout: {
-    _: "src/lib/components/mdsvexCustom/mdsvex.layout.svelte",
+    _: path_to_layout,
   },
   highlight: {
     highlighter: async (code, lang = "text") => {

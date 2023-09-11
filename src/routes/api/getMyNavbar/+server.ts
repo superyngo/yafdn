@@ -1,4 +1,4 @@
-import type {obj, GoogleSheetsEnv} from "$lib/types";
+import type {obj, GoogleSheetsEnv} from "$lib/utils/types";
 import {json} from "@sveltejs/kit";
 import {GoogleSpreadsheet} from "google-spreadsheet";
 import type {GoogleSpreadsheetRow} from "google-spreadsheet";

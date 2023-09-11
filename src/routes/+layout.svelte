@@ -1,8 +1,8 @@
 <script>
   import "../app.css";
-  import Header from "$lib/components/Header.svelte";
-  import PageTransition from "$lib/components/PageTransition.svelte";
-  import {config} from "$lib/config";
+  import Header from "$lib/components/Sites/Header.svelte";
+  import PageTransition from "$lib/components/Sites/PageTransition.svelte";
+  import {config} from "$lib/utils/config";
   export let data;
 </script>
 
