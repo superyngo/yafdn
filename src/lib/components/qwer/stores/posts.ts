@@ -1,10 +1,10 @@
-import { readable, writable, get } from 'svelte/store';
-import type { Post } from '$lib/types/post';
+import {readable, writable, get} from "svelte/store";
+import type {Post} from "$lib/components/qwer/types/post";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import postsjson from '$generated/posts.json';
-import { tagsCur } from '$stores/tags';
-import { result } from '$lib/search/stores';
+import postsjson from "$generated/posts.json";
+import {tagsCur} from "$stores/tags";
+import {result} from "$lib/components/qwer/search/stores";
 
 const _allposts = postsjson as [string, Post.Post][];
 
@@ -13,10 +13,10 @@ export const postsAll = readable<Map<string, Post.Post>>(new Map(_allposts));
 export const postsShow = (() => {
   const _default = _allposts
     .filter((e) => {
-      return !(e[1]['options'] && e[1]['options'].includes('unlisted'));
+      return !(e[1]["options"] && e[1]["options"].includes("unlisted"));
     })
     .flatMap((e) => e[1]);
-  const { subscribe, set } = writable<Post.Post[]>(_default);
+  const {subscribe, set} = writable<Post.Post[]>(_default);
 
   const _init = () => {
     set(_default);
@@ -36,20 +36,26 @@ export const postsShow = (() => {
   const _filterByTags = (data: Post.Post[]) => {
     let _data = data;
     get(tagsCur).forEach((v, category) => {
-      if (category === 'tags') {
+      if (category === "tags") {
         v.forEach((searchTag) => {
           _data = _data.filter((e) => {
             if (!e.tags) return false;
             return e.tags.find(
-              (tagItem: string | string[] | { [key: string]: string } | { [key: string]: string[] }) => {
-                if (typeof tagItem === 'string') {
+              (
+                tagItem:
+                  | string
+                  | string[]
+                  | {[key: string]: string}
+                  | {[key: string]: string[]}
+              ) => {
+                if (typeof tagItem === "string") {
                   return tagItem === searchTag;
                 }
                 if (Array.isArray(tagItem)) {
                   return tagItem.includes(searchTag);
                 }
                 return false;
-              },
+              }
             );
           });
         });
@@ -57,14 +63,21 @@ export const postsShow = (() => {
         v.forEach((searchTag) => {
           _data = _data.filter((e) => {
             if (!e.tags) return false;
-            return e.tags.find((tagItem: { [key: string]: string } | { [key: string]: string[] }) => {
-              if (typeof tagItem === 'object' && tagItem[category] !== undefined) {
-                if (Array.isArray(tagItem[category])) {
-                  return tagItem[category].includes(searchTag);
+            return e.tags.find(
+              (
+                tagItem: {[key: string]: string} | {[key: string]: string[]}
+              ) => {
+                if (
+                  typeof tagItem === "object" &&
+                  tagItem[category] !== undefined
+                ) {
+                  if (Array.isArray(tagItem[category])) {
+                    return tagItem[category].includes(searchTag);
+                  }
+                  return tagItem[category] === searchTag;
                 }
-                return tagItem[category] === searchTag;
               }
-            });
+            );
           });
         });
       }

@@ -1,27 +1,27 @@
-import { writable, get } from 'svelte/store';
-import { postsShow } from '$stores/posts';
-import SearchWorker from '$lib/workers/search.js?worker';
+import {writable, get} from "svelte/store";
+import {postsShow} from "$stores/posts";
+import SearchWorker from "$lib/components/qwer/workers/search.js?worker";
 
 export const inited = writable(false);
 export const searching = writable(false);
 export const result = writable(undefined);
 
 export const query = (() => {
-  const { subscribe, set } = writable<string>('');
+  const {subscribe, set} = writable<string>("");
   let searchWorker: Worker;
 
   const _init = () => {
     if (get(inited)) return;
     searchWorker = new SearchWorker();
-    searchWorker.addEventListener('message', (event) => {
-      const { type, payload } = event.data;
-      if (type === 'query') {
+    searchWorker.addEventListener("message", (event) => {
+      const {type, payload} = event.data;
+      if (type === "query") {
         result.set(payload);
         postsShow.filter();
       }
     });
     searchWorker.postMessage({
-      type: 'init',
+      type: "init",
     });
     inited.set(true);
   };
@@ -29,7 +29,7 @@ export const query = (() => {
     set(q);
     if (q && q.length > 0) {
       searchWorker.postMessage({
-        type: 'query',
+        type: "query",
         payload: q,
       });
     } else {
@@ -38,7 +38,7 @@ export const query = (() => {
   };
 
   const _reset = () => {
-    set('');
+    set("");
     result.set(undefined);
     postsShow.filter();
   };

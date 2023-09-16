@@ -1,6 +1,6 @@
 <script lang="ts">
-  import File from '$lib/components/file.svelte';
-  import type { Folder } from '$lib/types/folder';
+  import File from "$lib/components/qwer/components/file.svelte";
+  import type {Folder} from "$lib/components/qwer/types/folder";
 
   export let expanded = true;
   export let name: string;
@@ -17,12 +17,16 @@
   class="flex justify-start items-center cursor-pointer"
   on:click={toggle}
   on:keydown={(e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       toggle();
     }
-  }}>
+  }}
+>
   <div
-    class="{expanded ? 'i-fluent-emoji-flat-open-file-folder' : 'i-fluent-emoji-flat-file-folder'} !w8 !h8 shrink-0" />
+    class="{expanded
+      ? 'i-fluent-emoji-flat-open-file-folder'
+      : 'i-fluent-emoji-flat-file-folder'} !w8 !h8 shrink-0"
+  />
   <div class="px2">
     {name}
   </div>
@@ -44,7 +48,7 @@
 
 <style>
   ul {
-    --at-apply: 'border-gray/[0.5] border-l-2';
+    --at-apply: "border-gray/[0.5] border-l-2";
     padding: 0.2em 0 0 0.5em;
     margin: 0 0 0 0.5em;
     list-style: none;

@@ -10,8 +10,8 @@
       img: `${data.url}/snake3310.png`,
     },
     {
-      title: "Test",
-      href: `${data.url}/test`,
+      title: "Message Board",
+      href: `${data.url}/message_board`,
       img: `${data.url}/testApiWebhook.png`,
     },
   ];

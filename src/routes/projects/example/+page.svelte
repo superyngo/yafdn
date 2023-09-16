@@ -2,17 +2,17 @@
 <script lang="ts">
   /* eslint-disable @typescript-eslint/ban-ts-comment */
   // @ts-nocheck
-  import Post from "$lib/layouts/post.svelte";
-  import ImgZoom from "$lib/components/image_zoom.svelte";
-  import Video from "$lib/components/video.svelte";
-  import CodeCopy from "$lib/components/code_copy.svelte";
-  import InfoBox from "$lib/components/info_box.svelte";
+  import Post from "$lib/components/qwer/layouts/post.svelte";
+  import ImgZoom from "$lib/components/qwer/components/image_zoom.svelte";
+  import Video from "$lib/components/qwer/components/video.svelte";
+  import CodeCopy from "$lib/components/qwer/components/code_copy.svelte";
+  import InfoBox from "$lib/components/qwer/components/info_box.svelte";
 
-  import Youtube from "$lib/components/youtube.svelte";
-  import Custom from "$lib/components/custom/custom.svelte";
+  import Youtube from "$lib/components/qwer/components/youtube.svelte";
+  import Custom from "$lib/components/qwer/components/custom/custom.svelte";
   const const_variable = 999;
 
-  import Folder from "$lib/components/folder.svelte";
+  import Folder from "$lib/components/qwer/components/folder.svelte";
 
   let configFolder = [
     {
@@ -502,6 +502,5 @@ m0 0v40h399900v-40z m100 194v40h399900v-40zm0 0v40h399900v-40z'/></svg></span></
         <a href="#fnref:bignote">↩</a>
       </li>
     </ol>
-
   </article>
 </Post>

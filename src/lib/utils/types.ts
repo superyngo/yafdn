@@ -23,3 +23,12 @@ export type LabelType = {
   name: string;
   color: string;
 };
+
+export type StatusChange =
+  | {
+      statusChange: boolean;
+      message: string;
+    }
+  | null
+  | string
+  | {};
